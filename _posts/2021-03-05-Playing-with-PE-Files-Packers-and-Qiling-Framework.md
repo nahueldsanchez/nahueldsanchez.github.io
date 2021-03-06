@@ -74,7 +74,7 @@ To analyze the original file and the dumped one I used [PEBear](https://hshrzd.w
 In the following image we can see a visual representation of the "HelloWorld.exe" binary in its two versions, RAW (as it is in the disk) and Virtual (When loaded in memory):
 
 <html>
-<img src="Images/20210305-Playing-with-PE-Files-Packers-and-Qiling-Framework_screenshot1.png" alt="HelloWorld.exe, Raw vs Virtual representation">
+<img src="Images/screenshot1.png" alt="HelloWorld.exe, Raw vs Virtual representation">
 </html>
 
 As you can see sections have different size, and maybe you already see the problem. Let's see the same image for our dump:
