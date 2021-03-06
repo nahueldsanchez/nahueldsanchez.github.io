@@ -12,8 +12,8 @@ Hi there! I'm launching a new version of the blog... and needed some good excuse
 
 The idea for this blog post is to describe two scenarios that I wanted to explore and what I learned along the way:
 
-1) Execute a simple x86 file in Qiling Framework, dump it from memory and being able to run it again.
-2) Perform the same task that in the first scenario, but this time, packing the file previously. In this case I used Qiling to unpack the file.
+1. Execute a simple x86 file in Qiling Framework, dump it from memory and being able to run it again.
+2. Perform the same task that in the first scenario, but this time, packing the file previously. In this case I used Qiling to unpack the file.
 
 _Note: So far I was not able to manually reconstruct the IAT from the dump, that, I hope, will be material for other post._
 
@@ -46,7 +46,7 @@ This code gives you a Python shell and stops execution once the emulation reach 
 
 Once the execution reached the entry point I used the following Qiling capabilities to dump the memory:
 
-1) `ql.mem.show_mapinfo()` to view what memory range I had to dump.
+1. `ql.mem.show_mapinfo()` to view what memory range I had to dump.
 
 ~~~
 (Pdb) ql.mem.show_mapinfo()
@@ -57,7 +57,7 @@ Once the execution reached the entry point I used the following Qiling capabilit
 
 In this case we can see that the binary was loaded at `0x00400000` and has a size of `0x7000`
 
-2) `ql.mem.read(0x00400000, 0x7000)`
+2. `ql.mem.read(0x00400000, 0x7000)`
 
 ~~~Python
 (Pdb) f = open('memory_dump.bin', 'wb')
@@ -128,7 +128,7 @@ For this task I explored several options with different goals in mind:
 
 - If we don't have access to the OEP, what I ended up doing was to hook a block of code to tell Qiling to stop the execution when that block was executed. What block is the question then...? The one that the packer reserved to write the program once it starts unpacking it. For this I used the following idea:
 
-1) I checked where that section started and ended:
+1. I checked where that section started and ended:
 
 ~~~
 objdump -h HelloWorldCompressed.exe 
@@ -142,8 +142,8 @@ Idx Name          Size      VMA       LMA       File off  Algn
 
 ~~~
 
-2) We know that starts at `0x401000` and ends at `0x407000`
-3) With this information we can used the following code:
+2. We know that starts at `0x401000` and ends at `0x407000`
+3. With this information we can used the following code:
 
 ~~~Python
 def dump_packed_program(ql):
@@ -176,6 +176,8 @@ The code snippet above shows two  different options. It can dump the program to 
 
 This is a very basic approach and only will work with small binaries. But on the bright side allows us to se which API calls are being made. As you can see after a `call dword ptr [address]` we see the name of the API (thanks Qiling!).
 
+The complete code for this blogpost can be found [here](https://github.com/nahueldsanchez/blogpost_Playing-with-PE-Files-Packers-and-Qiling-Framework)
+
 
 ## Some notes about what did not work
 
@@ -202,30 +204,30 @@ The problem that I was facing was: How I can find what's the actual address of a
 
 What I did was:
 
-1) Modify Qiling and make it print the IAT dictionary that it builds while loading a binary and load the unpacked binary. I found the following information:
+1. Modify Qiling and make it print the IAT dictionary that it builds while loading a binary and load the unpacked binary. I found the following information:
 
 ~~~
 Import name: b'__stdio_common_vfprintf', Address from IAT: 0x10286801, written to: 0x4030c4
 ~~~
 
-2) Take a look at what address the library (dll) exporting my API was being loaded 
+2. Take a look at what address the library (dll) exporting my API was being loaded 
 
 [=] [memory.py:139]	[+] 10285000 - 10289000 - rwx    api-ms-win-crt-stdio-l1-1-0.dll (/api-ms-win-crt-stdio-l1-1-0.dll)
 
-3) Subtract the address found in the IAT to the base address
+3. Subtract the address found in the IAT to the base address
 
 0x10286801 - 0x10285000 = 0x1801
 
-4) Look at what address the library was loaded when the packed binary was loaded:
+4. Look at what address the library was loaded when the packed binary was loaded:
 
 [=] [memory.py:139]	[+] 10280000 - 10284000 - rwx    api-ms-win-crt-stdio-l1-1-0.dll (/api-ms-win-crt-stdio-l1-1-0.dll)
 
-4) Add the offset from step 3 to the base address of the library --> hex(0x10280000+0x1801) = 0x10281801
+5. Add the offset from step 3 to the base address of the library --> hex(0x10280000+0x1801) = 0x10281801
 
 
-5) Search for the value from step 4 in the dump (in Little Endian!): 01 18 28 10 --> found address 0x4030c4
+6. Search for the value from step 4 in the dump (in Little Endian!): 01 18 28 10 --> found address 0x4030c4
 
-6) To be sure that this was correct I patched the binary at address `0x4030c4` with `b'\x00\x00\x00\x00'` and it crashed before printing the Hello world message. _Note: The patching must be done after the program was unpacked. This means, after it reached the OEP._
+7. To be sure that this was correct I patched the binary at address `0x4030c4` with `b'\x00\x00\x00\x00'` and it crashed before printing the Hello world message. _Note: The patching must be done after the program was unpacked. This means, after it reached the OEP._
 
 All of this could have been be done in an easier way, just looking at the exported functions from `api-ms-win-crt-stdio-l1-1-0.dll`. But I learned it in the hard way :P.
 
