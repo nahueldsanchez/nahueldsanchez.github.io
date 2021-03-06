@@ -4,12 +4,8 @@ title: About
 permalink: /about/
 ---
 
-Some information about you!
-
-### More Information
-
-A place to include any other types of information that you'd like to include about yourself.
+Hi there! My name is  Nahuel D. Sánchez. I'm a Security Researcher and here  you'll find notes. I hope that they are useful for you as they are for me :P.
 
 ### Contact me
 
-[email@domain.com](mailto:email@domain.com)
+nahueld.sanchez[at]gmail[dot]com
