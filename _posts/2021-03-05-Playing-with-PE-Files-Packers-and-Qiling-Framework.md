@@ -74,13 +74,15 @@ To analyze the original file and the dumped one I used [PEBear](https://hshrzd.w
 In the following image we can see a visual representation of the "HelloWorld.exe" binary in its two versions, RAW (as it is in the disk) and Virtual (When loaded in memory):
 
 
-{ site.baseurl }}/images/2021-03-05-Playing-with-PE-Files-Packers-and-Qiling-Framework_screenshot1.png" alt="HelloWorld.exe, Raw vs Virtual representation">
+<html>
+<img src="{ site.baseurl }}/images/2021-03-05-Playing-with-PE-Files-Packers-and-Qiling-Framework_screenshot1.png" alt="HelloWorld.exe, Raw vs Virtual representation">
+</html>
 
 
 As you can see sections have different size, and maybe you already see the problem. Let's see the same image for our dump:
 
 <html>
-<img src="images/2021-03-05-Playing-with-PE-Files-Packers-and-Qiling-Framework_screenshot2.png" alt="Dump.bin, Raw vs Virtual representation">
+<img src="{ site.baseurl }}images/2021-03-05-Playing-with-PE-Files-Packers-and-Qiling-Framework_screenshot2.png" alt="Dump.bin, Raw vs Virtual representation">
 </html>
 
 This don't look good. As we can see, sections in both representations have the same size (This makes sense as we dumped this from memory. In this case we never had the Raw representation). An interesting question is ... And what's the impact of this? Well, based on my limited understanding I guess that there is a lot of offsets that are calculated based on these properties, and of course, are broken. The most important thing for us is that the `Import Table` &mdash; A table used by the binary, that specifies what functions it uses and instructs the loader in which external DLL's it should go and search them &mdash; does not work.
