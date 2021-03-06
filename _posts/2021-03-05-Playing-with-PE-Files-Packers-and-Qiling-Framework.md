@@ -39,7 +39,7 @@ To run the program in Qiling I used the following code:
 
 <html>
 <script src="https://gist.github.com/nahueldsanchez/8a8b428a012e481fb84ae4ebdb23644c.js"></script>
-<html>
+</html>
 
 This code gives you a Python shell and stops execution once the emulation reach the Program Entry Point. This allowed me to play and explore what options I had to dump the memory, and later, to troubleshot issues.
 
