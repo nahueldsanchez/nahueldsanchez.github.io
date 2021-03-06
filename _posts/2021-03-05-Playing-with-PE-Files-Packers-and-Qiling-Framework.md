@@ -8,11 +8,13 @@ excerpt_separator: <!--more-->
 
 Hi there! I'm launching a new version of the blog... and needed some good excuse for this, so here we have a new blog post!. This time I decided to take a look at how packers work and for that I had to learn quite a few things about the PE file format, how windows load files and spend a lot of time banging my head against the keyboard.
 
+<!--more-->
+
 The idea for this blog post is to describe two scenarios that I wanted to explore and what I learned along the way:
 
 1) Execute a simple x86 file in Qiling Framework, dump it from memory and being able to run it again.
 2) Perform the same task that in the first scenario, but this time, packing the file previously. In this case I used Qiling to unpack the file.
-<!--more-->
+
 _Note: So far I was not able to manually reconstruct the IAT from the dump, that, I hope, will be material for other post._
 
 Some notes:
