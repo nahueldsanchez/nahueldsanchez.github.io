@@ -1,6 +1,7 @@
 ---
 layout: post
 title: Playing with PE Files, Packers and Qiling Framework
+excerpt_separator: <!--more-->
 ---
 
 ## Introduction
@@ -11,7 +12,7 @@ The idea for this blog post is to describe two scenarios that I wanted to explor
 
 1) Execute a simple x86 file in Qiling Framework, dump it from memory and being able to run it again.
 2) Perform the same task that in the first scenario, but this time, packing the file previously. In this case I used Qiling to unpack the file.
-
+<!--more-->
 _Note: So far I was not able to manually reconstruct the IAT from the dump, that, I hope, will be material for other post._
 
 Some notes:
