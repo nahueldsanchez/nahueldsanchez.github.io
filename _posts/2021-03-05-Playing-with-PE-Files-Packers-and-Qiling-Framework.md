@@ -31,9 +31,9 @@ Before going with the packed example, I wanted to start with what I though was a
 
 To start I compiled a simple "Hello World" application for x86 in Visual Studio 2019. I tried to keep compilation as simple as possible and ended up with the following command line:
 
-```
+~~~
 /permissive- /GS- /Qpar- /analyze- /W3 /Gy- /Zc:wchar_t /Gm- /Od /Ob0 /sdl- /Fd"Debug\vc142.pdb" /Zc:inline /fp:precise /D "WIN32" /D "_DEBUG" /D "_CONSOLE" /errorReport:prompt /WX- /Zc:forScope /Gd /Oy- /MD /FC /Fa"Debug\" /nologo /Fo"Debug\" /Fp"Debug\HelloWorld.pch" /diagnostics:column 
-```
+~~~
 
 To run the program in Qiling I used the following code:
 
@@ -47,23 +47,23 @@ Once the execution reached the entry point I used the following Qiling capabilit
 
 1) `ql.mem.show_mapinfo()` to view what memory range I had to dump.
 
-```
+~~~
 (Pdb) ql.mem.show_mapinfo()
 ...
 [=] [memory.py:139]	[+] 00400000 - 00407000 - rwx    [PE] (/../bin/x86/HelloWorld.exe)
 ...
-```
+~~~
 
 In this case we can see that the binary was loaded at `0x00400000` and has a size of `0x7000`
 
 2) `ql.mem.read(0x00400000, 0x7000)`
 
-```Python
+~~~Python
 (Pdb) f = open('memory_dump.bin', 'wb')
 (Pdb) f.write(ql.mem.read(0x00400000, 0x7000))
 28672
 (Pdb) f.close()
-```
+~~~
 
 After these commands we have a memory dump with our binary exactly as it was mapped in memory. If we try to run this binary we won't succeed because binaries have different properties when they are loaded and when they are written in disk. Our dump kept the "in memory" properties and was saved to the disk. When the loader reads these properties back, things don't add up. Let's explore these differences and check what we can do to fix it.
 
@@ -94,7 +94,7 @@ In Ricardo's tutorial he explained how to fix this using PE Editor, specifically
 
 What we need to do is to "align" these sections, and the easiest way is to match the values for the "virtual" representation on the "raw" representation, and that's what the magic button does. But we'll do it using another cool project, [pefile](https://github.com/erocarrera/pefile), a Python library. The code I used it's pretty simple:
 
-```Python
+~~~Python
 import pefile
 
 binary = pefile.PE('<path_to_dump>')
@@ -103,7 +103,7 @@ for section in binary.sections:
     section.PointerToRawData = section.VirtualAddress
 
 binary.write('dump_fix.exe')
-```
+~~~
 
 This code retrieves every section and sets its Raw Data offset to the Virtual address. It writes the result to a new file called `dump_fix.exe`.
 
@@ -127,7 +127,7 @@ For this task I explored several options with different goals in mind:
 
 1) I checked where that section started and ended:
 
-```
+~~~
 objdump -h HelloWorldCompressed.exe 
 
 HelloWorldCompressed.exe:     file format pei-i386
@@ -137,12 +137,12 @@ Idx Name          Size      VMA       LMA       File off  Algn
   0 UPX0          00006000  00401000  00401000  00000400  2**2
                   CONTENTS, ALLOC, CODE
 
-```
+~~~
 
 2) We know that starts at `0x401000` and ends at `0x407000`
 3) With this information we can used the following code:
 
-```Python
+~~~Python
 def dump_packed_program(ql):
     logging.info('Dumping program from memory...')
     with open('dump_file_compressed.bin', 'wb') as dump_file:
@@ -162,7 +162,7 @@ def trace_code(ql, address, size):
 ql.hook_block(trace_code, begin=0x401000, end=0x00407000)
 #ql.hook_block(dump_packed_program, begin=0x401000, end=0x00407000)
 ...
-```
+~~~
 
 The code snippet above shows two  different options. It can dump the program to disk or to trace its execution instruction by instruction as shown below:
 
@@ -180,13 +180,13 @@ This is a very basic approach and only will work with small binaries. But on the
 
 At the beginning I tried to dump the program before reaching the OEP, something like this:
 
-```Python
+~~~Python
 ...
 ql.hook_code(dump_packed_program, begin=UPX0_START, end=UPX0_START+DUMP_SIZE)
 UPX0_START = 0x400000
 DUMP_SIZE = 0xa000
 ...
-```
+~~~
 
 This did not work. I guess that the cause was that the code that unpacks the original program did not run. Before I explained a way to solve this.
 
@@ -201,9 +201,9 @@ What I did was:
 
 1) Modify Qiling and make it print the IAT dictionary that it builds while loading a binary and load the unpacked binary. I found the following information:
 
-```
+~~~
 Import name: b'__stdio_common_vfprintf', Address from IAT: 0x10286801, written to: 0x4030c4
-```
+~~~
 
 2) Take a look at what address the library (dll) exporting my API was being loaded 
 
