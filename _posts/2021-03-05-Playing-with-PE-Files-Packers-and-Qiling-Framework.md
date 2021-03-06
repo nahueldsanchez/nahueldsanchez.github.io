@@ -75,7 +75,7 @@ In the following image we can see a visual representation of the "HelloWorld.exe
 
 
 <html>
-<img src="{ site.baseurl }}/images/2021-03-05-Playing-with-PE-Files-Packers-and-Qiling-Framework_screenshot1.png" alt="HelloWorld.exe, Raw vs Virtual representation">
+<img src="/images/2021-03-05-Playing-with-PE-Files-Packers-and-Qiling-Framework_screenshot1.png" alt="HelloWorld.exe, Raw vs Virtual representation">
 </html>
 
 
