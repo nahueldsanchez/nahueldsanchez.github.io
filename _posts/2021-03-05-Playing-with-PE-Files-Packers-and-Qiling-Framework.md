@@ -3,8 +3,6 @@ layout: post
 title: Playing with PE Files, Packers and Qiling Framework
 ---
 
-# Playing with PE Files, Packers and Qiling Framework
-
 ## Introduction
 
 Hi there! I'm launching a new version of the blog... and needed some good excuse for this, so here we have a new blog post!. This time I decided to take a look at how packers work and for that I had to learn quite a few things about the PE file format, how windows load files and spend a lot of time banging my head against the keyboard.
@@ -82,7 +80,7 @@ In the following image we can see a visual representation of the "HelloWorld.exe
 As you can see sections have different size, and maybe you already see the problem. Let's see the same image for our dump:
 
 <html>
-<img src="images/2021-03-05-Playing-with-PE-Files-Packers-and-Qiling-Framework_screenshot2.png" alt="Dump.bin, Raw vs Virtual representation">
+<img src="/images/2021-03-05-Playing-with-PE-Files-Packers-and-Qiling-Framework_screenshot2.png" alt="Dump.bin, Raw vs Virtual representation">
 </html>
 
 This don't look good. As we can see, sections in both representations have the same size (This makes sense as we dumped this from memory. In this case we never had the Raw representation). An interesting question is ... And what's the impact of this? Well, based on my limited understanding I guess that there is a lot of offsets that are calculated based on these properties, and of course, are broken. The most important thing for us is that the `Import Table` &mdash; A table used by the binary, that specifies what functions it uses and instructs the loader in which external DLL's it should go and search them &mdash; does not work.
@@ -112,7 +110,7 @@ This code retrieves every section and sets its Raw Data offset to the Virtual ad
 Let's analyze it in PEBear:
 
 <html>
-<img src="images/2021-03-05-Playing-with-PE-Files-Packers-and-Qiling-Framework_screenshot3.png" alt="dump_fix.exe, Raw vs Virtual representation">
+<img src="/images/2021-03-05-Playing-with-PE-Files-Packers-and-Qiling-Framework_screenshot3.png" alt="dump_fix.exe, Raw vs Virtual representation">
 </html>
 
 As we can see sections are aligned and the dumped binary works!. Now it's time to play with the compressed version.
@@ -229,6 +227,6 @@ Import name: b'__stdio_common_vfprintf', Address from IAT: 0x10286801, written t
 All of this could have been be done in an easier way, just looking at the exported functions from `api-ms-win-crt-stdio-l1-1-0.dll`. But I learned it in the hard way :P.
 
 <html>
-<img src="images/2021-03-05-Playing-with-PE-Files-Packers-and-Qiling-Framework_screenshot4.png" alt="export table for api-ms-win-crt-stdio-l1-1-0.dll">
+<img src="/images/2021-03-05-Playing-with-PE-Files-Packers-and-Qiling-Framework_screenshot4.png" alt="export table for api-ms-win-crt-stdio-l1-1-0.dll">
 </html>
 
