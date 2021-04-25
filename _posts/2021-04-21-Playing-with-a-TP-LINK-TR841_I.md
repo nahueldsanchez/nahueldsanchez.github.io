@@ -24,9 +24,9 @@ From left to right in the image we have `TX` (connect the `MISO` Pin from the BP
 
 Once I had everything connected I started [Minicom](https://linux.die.net/man/1/minicom) to connect to the Bus Pirate using the following command line:
 
-```
+~~~
 minicom -b 115200 -D /dev/ttyUSB0
-```
+~~~
 _Note:_ the virtual device `/dev/ttyUSB0` can change, it is possible to add an `udev` rule to avoid this [following these step](https://d.lij.uno/linux-bus-pirate.html). After these steps are done you'll be able to connect to the Bus Pirate specifying something like `/dev/buspirate`.
 
 
@@ -37,21 +37,22 @@ Normally you will need root or have your user added to specific groups to access
 
 you can add your user to these groups executing:
 
-```
+~~~
 usermod -a -G <group> $USER
-```
+~~~
+
 You'll have to logout and login again for the changes to take effect.
 
 ## Accessing the root shell over the UART interface
 
 Once everything is set up and connected, we'll need to configure the Bus Pirate as a transparent bridge, for that:
 
-1) Press `m` and select `3` (UART).
-2) Select `9` (115200 bps).
-3) Select `1` (8 bits, Parity = None)
-4) Select `1` (Stop bits 1)
-5) Select `1` (Receive Polarity Idle 1)
-6) Select `2` (Output type Normal)
+1. Press `m` and select `3` (UART).
+2. Select `9` (115200 bps).
+3. Select `1` (8 bits, Parity = None)
+4. Select `1` (Stop bits 1)
+5. Select `1` (Receive Polarity Idle 1)
+6. Select `2` (Output type Normal)
 
 You should see how the prompt changed to `UART>`. Now we'll select the _transparent bridge Macro_. For that write `(1)` and press `Enter`. You'll receive a confirmation message, type `y`. Now the BP is in transparent bridge mode. You can power up your router and you'll see the boot sequence displayed in the screen. To quit this mode you'll have to reset your BP (disconnecting it from the USB port is enough).
 
@@ -76,19 +77,20 @@ To set up the TFTP server I followed [this guide](http://chschneider.eu/linux/se
 
 Now that we have set up a TFTP server in our machine we can tell the router to connect to it (remember to connect the router to your machine either using Ethernet or WiFi) and retrieve files with the following command:
 
-```
+~~~
 tftp -g -r <BINARY> <TFTP_SERVER>
-```
+~~~
+
 Let's see where we can store the file:
 
-```
+~~~
 /var/tmp # mount
 rootfs on / type rootfs (rw)
 /dev/root on / type squashfs (ro,relatime)
 proc on /proc type proc (rw,relatime)
 ramfs on /var type ramfs (rw,relatime)
 /sys on /sys type sysfs (rw,relatime)
-```
+~~~
 
 Note that our only option to store files is in `/var/`, but bear in mind that files will be deleted upon the next reboot as it is a Ramfs filesystem. For more information about Ramfs you can check [this link](https://www.thegeekstuff.com/2008/11/overview-of-ramfs-and-tmpfs-on-linux/).
 
@@ -101,9 +103,9 @@ Buildroot its aimed at devices with embedded Linux, it allows you to cross-compi
 
 After downloading it from its website I decompressed it and run the command:
 
-```
+~~~
 make menuconfig
-```
+~~~
 
 Once it finishes it will show a large menu with different options that will tell Buildroot what to build and how. In this specific case that the Router is using a MIP32 Processor in Little Endian and the [uClibc](https://www.uclibc.org/) I chose the following options (I'm adding here those non-default):
 
