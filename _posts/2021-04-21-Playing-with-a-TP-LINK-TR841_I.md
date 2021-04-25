@@ -67,9 +67,9 @@ A quick way that I found to upload files is to use the TFTP client that the rout
 
 To set up the TFTP server I followed [this guide](http://chschneider.eu/linux/server/tftpd-hpa.shtml). I'm copying the steps below:
 
-1) Install the package: `apt-get install tftpd-hpa`
-2) To set the default root directory to serve files edit the file `/etc/default/tftpd-hpa` and add the following line: `TFTP_DIRECTORY="<DIRECTORY>"`
-3) Restart the service: `sudo service tftpd-hpa restart`
+1. Install the package: `apt-get install tftpd-hpa`
+2. To set the default root directory to serve files edit the file `/etc/default/tftpd-hpa` and add the following line: `TFTP_DIRECTORY="<DIRECTORY>"`
+3. Restart the service: `sudo service tftpd-hpa restart`
 
 *Note: Please bear in mind that you'll have a TFTP server running in your machine, remember to stop/disable the service once you don't need it anymore.*
 
