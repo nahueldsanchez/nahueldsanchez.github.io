@@ -38,7 +38,7 @@ At this point I decided to take a look at what was happening under the hood.
 
 I decided to use a combination of static and dynamic analysis to understand what was happening, taking advantage of the debugging capabilities that I obtained before. If you want to read more about it you can refer to the [previous post of this saga](https://nahueldsanchez.com.ar/Playing-with-a-TP-LINK-TR841_I/).
 
-I started decompressing the installed firmware.  I had a copy of it, that you can find [here](TBD). I used [binwalk](https://github.com/ReFirmLabs/binwalk) for this task:
+I started decompressing the installed firmware.  I had a copy of it, that you can find [here](https://github.com/nahueldsanchez/tplink-wr841n-misc/blob/main/firmware/TL-WR841Nv14_ES_0.9.1_4.16_up_boot%5B180515-rel41770%5D.bin). I used [binwalk](https://github.com/ReFirmLabs/binwalk) for this task:
 
 ```
 binwalk -eM TL-WR841Nv14_ES_0.9.1_4.16_up_boot[180515-rel41770].bin
@@ -118,7 +118,6 @@ Taking a quick look at this function I found some clues that led me to believe i
 
 Based on the ideas above, I decided to avoid doing a full analysis of this function and only focusing on understand what I needed to modify or change to accomplish my goal. I tried to understand how the process continued, and discarding options I learned that it called function `FUN_00408400`. This function after some checks called `rdp_updateFirmware`, I knew I was closer!.
 
-
 This function was being imported by the `httpd` binary from the `libcmm.so` shared object. It's primary function was calling (finally) the function doing the actual job, `rsl_sys_updateFirmware`.
 
 ## rsl_sys_updateFirmware
@@ -166,7 +165,7 @@ Breakpoint 1 at 0x2b9a76ac
 Continuing.
 ```
 
-After a few second I hit the breakpoint:
+After a few seconds I hit the breakpoint:
 
 ```
 Breakpoint 1, 0x2b9a76ac in rsl_dev_getProductVer () from target:/lib/libcmm.so
