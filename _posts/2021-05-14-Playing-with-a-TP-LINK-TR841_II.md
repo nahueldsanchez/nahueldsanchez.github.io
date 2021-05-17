@@ -77,50 +77,13 @@ As the image above shows, I found it being used as an argument for the function 
 
 ### Function http_rpm_update
 
-Decompiled function code provided by Ghidra:
+Decompiled function code provided by Ghidra (Just showing important content):
 
 ```C
 int http_rpm_update(int *param_1)
 
 {
-  bool bVar1;
-  int iVar2;
-  undefined4 uVar3;
-  undefined *puVar4;
-  uint uVar5;
-  undefined4 local_a38;
-  undefined auStack2612 [256];
-  char acStack2356 [256];
-  char acStack2100 [2052];
-  int local_30;
-  
-  local_a38 = 0;
-  DAT_00438730 = 0;
-  if (*(int *)(*param_1 + 0x1030) == 2) {
-    DAT_00438730 = 0x1162b;
-    iVar2 = 0x193;
-  }
-  else {
-    uVar5 = param_1[6];
-    iVar2 = cmem_getUpdateBufSize();
-    if (iVar2 + 0x40bb8U < uVar5) {
-      DAT_00438730 = 0x1162b;
-      iVar2 = 0x19d;
-    }
-    else {
-      if ((DAT_00438734 == (undefined *)0x0) &&
-         (DAT_00438734 = (undefined *)cmem_updateFirmwareBufAlloc(),
-         DAT_00438734 == (undefined *)0x0)) {
-        DAT_00438730 = 0x232a;
-        return 500;
-      }
-      puVar4 = DAT_00438734;
-      uVar3 = cmem_getUpdateBufSize();
-      bVar1 = false;
-      while ((param_1[6] != 0 &&
-             (iVar2 = http_parser_illMultiObj(param_1,acStack2356,0,puVar4,uVar3,&local_a38),
-             -1 < iVar2))) {
-        local_30 = iVar2;
+...
         iVar2 = strcmp(acStack2356,"filename");
         if (iVar2 == 0) {
           DAT_00438738 = local_30;
@@ -134,13 +97,7 @@ int http_rpm_update(int *param_1)
         puVar4 = &DAT_0040c7a4;
       }
       else {
-        DAT_00438730 = 0x1162b;
-        iVar2 = cmem_updateFirmwareBufFree(DAT_00438734);
-        if (iVar2 < 0) {
-          cdbg_printf(8,"http_rpm_update",0xa4,"Detach big buffer error\n");
-        }
-        DAT_00438734 = (undefined *)0x0;
-        puVar4 = &DAT_0040cd58;
+        ...
       }
       sprintf(acStack2100,"<html><head></head><body>%s</body></html>",puVar4);
       param_1[7] = 0;
@@ -174,7 +131,7 @@ The decompiled code for this function is:
 
 The first thing that I did was trying to be sure that this one was the function I was looking for. Luckily at the end of it we can see the same error message that we saw in our Serial terminal when we tried to update the firmware: `Firmware version check failed` and the hex number `0xbd7` which in decimal is `3031`, the same that in the error message.
 
-My main goal was to be able to land after line 46. That's after some checks that the code was doing to determine if it was possible to install the firmware in the device.
+My main goal was to be able to land around [line 23](https://gist.github.com/nahueldsanchez/7101197b7018760d7a478c70ab62e007#file-rsl_sys_updatefirmware-c-L23). That's after some checks that the code was doing to determine if it was possible to install the firmware in the device.
 
 At this point I thought that what I was trying to do could end up bricking my router, after all, I was bypassing checks made with the purpose of validating hardware parameters. To reduce this possibility I performed a diff with Meld between the decompressed stock firmware and the US firmware that I wanted to install. I noticed changes but the main structure was the same and I decided to take the risk.
 
