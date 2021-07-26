@@ -76,7 +76,7 @@ Each `statement` determines what the policy allows or denies and from whom (depe
 
 Well... after a long, but necesary introduction to core concepts we can start the fun part. I needed to understand how to create a S3 bucket using Terraform. I created a new file called `main.tf` that contained the text below.
 
-Also bear in mind that all the code shown in this blog post can be found here: https://github.com/nahueldsanchez/terraform-s3-bucket-mysfits
+Also bear in mind that all the code shown in this blog post can be found here: [https://github.com/nahueldsanchez/terraform-s3-bucket-mysfits](https://github.com/nahueldsanchez/terraform-s3-bucket-mysfits)
 
 ```
 ...
