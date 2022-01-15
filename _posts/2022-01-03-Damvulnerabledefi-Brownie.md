@@ -6,7 +6,7 @@ excerpt_separator: <!--more-->
 
 ## Introduction
 
-Hello, happy new year! In the last months of 2021, I've been working on this project. Thanks to my friend and college [Pablo Artuso](https://twitter.com/lmkalg) I started to learn about Blockchain and the challenges and opportunities that this new technology has.
+Hello, happy new year! In the last months of 2021, I've been working on this project. Thanks to my friend and colleage [Pablo Artuso](https://twitter.com/lmkalg) I started to learn about Blockchain and the challenges and opportunities that this new technology has.
 
 I was quickly interested in the security aspects of smart contracts. As part of my learning process I found [damn vulnerable
 defi challenges](https://www.damnvulnerabledefi.xyz/), created by @tinchoabbate. that seemed a good place to start practicing.
