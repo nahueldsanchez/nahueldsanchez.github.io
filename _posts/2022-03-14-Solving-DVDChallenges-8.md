@@ -4,7 +4,7 @@ title:  Solving Damn Vulnerable Defi Challenges Series (V). Puppet
 excerpt_separator: <!--more-->
 ---
 
-Hello, coming back from some holidays! I had some time to continue solving Damn Vulnerable Defi Challenges. Today's post explains the way I approached and solved Challenge #8 - Puppet. Enjoy!.
+Hello, coming back from some holidays! I had some time to continue solving Damn Vulnerable Defi Challenges. Today's post explains the way I approached and solved [Challenge 8 - Puppet](https://www.damnvulnerabledefi.xyz/challenges/8.html). Enjoy!.
 
 <!--more-->
 
