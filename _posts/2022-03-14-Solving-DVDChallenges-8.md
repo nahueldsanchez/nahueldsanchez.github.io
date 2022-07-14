@@ -1,7 +1,8 @@
 ---
 layout: post
-title:  Solving Damn Vulnerable Defi Challenges Series (V). Puppet
+title:  Solving Damn Vulnerable DeFi Challenges Series (V). Puppet
 excerpt_separator: <!--more-->
+category: DeFi
 ---
 
 Hello, coming back from some holidays! I had some time to continue solving Damn Vulnerable Defi Challenges. Today's post explains the way I approached and solved [Challenge 8 - Puppet](https://www.damnvulnerabledefi.xyz/challenges/8.html). Enjoy!.
@@ -54,7 +55,7 @@ Later, it checks that these amount was sent by the user via `msg.value`.
 
 If everything is OK, in tries to transfer the borrowed amount back to the user (it will fail if the pool does not have enough tokens).
 
-So nothing extrange here. Once I finished with this function I decided to take a look at `calculateDepositRequired` which is another critical function that defines how much the user needs to deposit!, let's take a look at it.
+So nothing estrange here. Once I finished with this function I decided to take a look at `calculateDepositRequired` which is another critical function that defines how much the user needs to deposit!, let's take a look at it.
 
 ## Calculating deposits required as collateral
 
@@ -89,7 +90,7 @@ So it was key to understand what `uniswapPair` was. Looking at the contract's co
     }
 ```
 
-Looking at the code in charge of deploying the contract we finally uderstand that this variable holds the address of the Uniswap Exchange:
+Looking at the code in charge of deploying the contract we finally understand that this variable holds the address of the Uniswap Exchange:
 
 ```
 // Deploy the lending pool
@@ -101,7 +102,7 @@ Looking at the code in charge of deploying the contract we finally uderstand tha
 
 Now with all the parts in place, let's analyze the problem again:
 
-The goal for the attacker is to steal all the DVT tokens from the pool. The problem is that to borrow 100000 DVTs, and under normal circumnstances, *twice* the amount in ETH is needed to be deposited as collateral. The attacker only has 25 ETH.
+The goal for the attacker is to steal all the DVT tokens from the pool. The problem is that to borrow 100000 DVTs, and under normal circumstances, *twice* the amount in ETH is needed to be deposited as collateral. The attacker only has 25 ETH.
 
 To be true the fact that twice the amount of ETH has to be deposited, `_computeOraclePrice()` must return `1`. This is true only if the relationship between `uniswapPair.balance` and `token.balanceOf(uniswapPair)` is 1:1. By default, the pool has 10 ETH and 10 DVT, and hence, the function returns 1.
 

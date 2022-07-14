@@ -1,10 +1,11 @@
 ---
 layout: post
-title:  Solving Damn Vulnerable Defi Challenges Series (II). Truster and Side entrance
+title:  Solving Damn Vulnerable DeFi Challenges Series (II). Truster and Side entrance
 excerpt_separator: <!--more-->
+category: DeFi
 ---
 
-Hello there! Continuing with Damn Vulnerable Defi Challenges, in today's post I share my solutions for challenges #3 - Truster, and #4 - Side entrance.
+Hello there! Continuing with Damn Vulnerable DeFi Challenges, in today's post I share my solutions for challenges #3 - Truster, and #4 - Side entrance.
 
 <!--more-->
 
@@ -35,7 +36,7 @@ Based on this idea I developed the AttackerContract contract that at high level 
 
 1. Executes the "flashLoan" function from TrustedLenderPool borrowing 0 tokens.
 2. As `target` for the `target.functionCall(data)` it sets the address of the DamnValuableToken, and as function to call (data) the `approve(address,uint256)` function. Doing this, it tricks the `TrusterLenderPool` into executing a call to `DamnValuableToken` approving the spending of X tokens to his (attacker) address.
-3. Once the flashLoan finishes, it then executes `transferFrom` fuction from DamnValuableToken, transfering tokens from the `TrustedLenderPool` back to the Attacker. Remember that this was previously allowed in step 2.
+3. Once the flashLoan finishes, it then executes `transferFrom` function from DamnValuableToken, transferring tokens from the `TrustedLenderPool` back to the Attacker. Remember that this was previously allowed in step 2.
 
 All of these steps are executed in the constructor function, so it is only needed one transaction (the deployment of the attacker contract). Kudos to Pablo Artuso that gave me this little hint. You can read his solution for these challenges [here](https://lmkalg.github.io/).
 
@@ -63,7 +64,7 @@ The main problem in my opinion is that the Pool does not distinguish who owns th
 2. It then proceeds to deposit the borrowed funds into the Lender Pool.
 3. The flashLoan continues its execution and the final assert is verified.
 4. As the attacker already deposited the funds (this).balance >= balanceBefore
-5. But now, the Ether deposited by the attacker (the borrowed Ether) can be withdrawed, as he deposited it, and then, he owns it.
+5. But now, the Ether deposited by the attacker (the borrowed Ether) can be withdrawn, as he deposited it, and then, he owns it.
 
 ## Solution
 

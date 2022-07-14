@@ -2,6 +2,7 @@
 layout: post
 title:  Bypassing upgrade limitations on a TP-Link TL-WR841N
 excerpt_separator: <!--more-->
+category: [Vulnerability-Research, Hardware-Hacking]
 ---
 
 ## Introduction

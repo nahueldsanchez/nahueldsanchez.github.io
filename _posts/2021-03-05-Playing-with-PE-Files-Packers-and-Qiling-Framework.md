@@ -2,6 +2,7 @@
 layout: post
 title: Playing with PE Files, Packers and Qiling Framework
 excerpt_separator: <!--more-->
+category: Vulnerability-Research
 ---
 
 ## Introduction

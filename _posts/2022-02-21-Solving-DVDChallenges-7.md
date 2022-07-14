@@ -1,10 +1,11 @@
 ---
 layout: post
-title:  Solving Damn Vulnerable Defi Challenges Series (IV). Compromised
+title:  Solving Damn Vulnerable DeFi Challenges Series (IV). Compromised
 excerpt_separator: <!--more-->
+category: DeFi
 ---
 
-Hello there, I missed Monday for the second time, but it's better late than never!. I had some time during the weekend to continue with Damn Vulnerable Defi Challenges. This time I solved challenge #7, titled "Compromised". So far is the challenge that I enjoyed the most. I'll share the way approached it, enjoy!.
+Hello there, I missed Monday for the second time, but it's better late than never!. I had some time during the weekend to continue with Damn Vulnerable DeFi Challenges. This time I solved challenge #7, titled "Compromised". So far is the challenge that I enjoyed the most. I'll share the way approached it, enjoy!.
 
 <!--more-->
 
@@ -44,9 +45,9 @@ After reviewing the contracts' code, I suspected that this challenge somehow had
 
 Based on this idea I continued trying to understand what meant these two strings.
 
-[After reading a bit](https://medium.com/@tunatore/how-to-generate-ethereum-addresses-technical-address-generation-explanation-and-online-course-9a56359f139e) about Ethereum addressess I remembered that account addresses are derived from private keys, and those private keys are 32 bytes long. This size matched the size of the strings previously found.
+[After reading a bit](https://medium.com/@tunatore/how-to-generate-ethereum-addresses-technical-address-generation-explanation-and-online-course-9a56359f139e) about Ethereum addresses I remembered that account addresses are derived from private keys, and those private keys are 32 bytes long. This size matched the size of the strings previously found.
 
-I decided to generate two addressess based on these strings, assuming they were private keys. To do this I used [Brownie](https://eth-brownie.readthedocs.io/en/stable/account-management.html)
+I decided to generate two addresses based on these strings, assuming they were private keys. To do this I used [Brownie](https://eth-brownie.readthedocs.io/en/stable/account-management.html)
 
 ```
 $ brownie accounts new t1
@@ -83,7 +84,7 @@ This price is fetched from an on-chain oracle, and is based on three trusted rep
 - 0xe92401A4d3af5E446d93D11EEc806b1462b39D15
 - 0x81A5D6E50C214044bE44cA0CB057fe119097850c
 
-As you can see, we have the private keys of two of the three accounts used as "trusted reporters". This made me think about the posibility of manipulate the NFT's price.
+As you can see, we have the private keys of two of the three accounts used as "trusted reporters". This made me think about the possibility of manipulate the NFT's price.
 
 The next thing I did was check how the price of an NFT was calculated. I ended up in function `_computeMedianPrice`, for clarity I included the code below:
 

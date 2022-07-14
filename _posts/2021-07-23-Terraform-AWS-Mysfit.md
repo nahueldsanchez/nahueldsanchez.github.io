@@ -2,6 +2,7 @@
 layout: post
 title:  Terraform Series - AWS S3 Buckets, policies and what Terraform can do for us?
 excerpt_separator: <!--more-->
+category: Cloud
 ---
 
 ## Introduction
@@ -19,7 +20,7 @@ As you can see we have a long road ahead!. So, let's start.
 
 <!--more-->
 
-The idea for this blog post was born while doing [AWS' "Build a Modern Web Application"](https://aws.amazon.com/getting-started/hands-on/build-modern-app-fargate-lambda-dynamodb-python/module-one/#) hands-on project. Specifically on module I, after setting up an IDE you need to set up an S3 bucket to host an static website. I found this an excellent opportunity to continue learing about Terraform and AWS concepts.
+The idea for this blog post was born while doing [AWS' "Build a Modern Web Application"](https://aws.amazon.com/getting-started/hands-on/build-modern-app-fargate-lambda-dynamodb-python/module-one/#) hands-on project. Specifically on module I, after setting up an IDE you need to set up an S3 bucket to host an static website. I found this an excellent opportunity to continue learning about Terraform and AWS concepts.
 
 ## Fundamental concepts
 
@@ -31,7 +32,7 @@ There are a lot of interesting details about S3 buckets (what happens with Avail
 
 ### AWS IAM Policies, S3 Bucket policies and S3 ACLs
 
-Now with a brief understaing of S3, I needed to understand how access was granted and forbidden for objects stored in S3 buckets. I found that there are *three (!)* different methods to configure it. Now I understand why so many companies end up having their AWS S3 buckets open to the Internet. It seems to be very easy to screw things up.
+Now with a brief understating of S3, I needed to understand how access was granted and forbidden for objects stored in S3 buckets. I found that there are *three (!)* different methods to configure it. Now I understand why so many companies end up having their AWS S3 buckets open to the Internet. It seems to be very easy to screw things up.
 
 By default, when you create a S3 bucket it's configured as `private`. This means that only the owner of the AWS account where the bucket was created can access it. To allow other users to access it a policy is needed.
 
@@ -44,7 +45,7 @@ _Note: While reading the documentation I found that AWS supports up to six types
 `IAM policies` are identity-based. IAM policies are objects defined in JSON documents that, when attached to an identity, define what the identity can do. There are two types of `Identity-based` policies:
 
 - Managed (AWS/Customer) policies: They can be attached to multiple users. The difference between "AWS" and "Customer" is that "AWS policies" are managed by AWS and you cannot modify them.
-- Inline policies: These policies are only assignable to one identity. Mantain a strict one-to-one relationship and are deleted when you delete the entity that has it assigned. A use case for this can be if at some point you want to create a user with unrestricted privileges and you are worried that the policy for it can be misused and assigned to other users.
+- Inline policies: These policies are only assignable to one identity. Maintain a strict one-to-one relationship and are deleted when you delete the entity that has it assigned. A use case for this can be if at some point you want to create a user with unrestricted privileges and you are worried that the policy for it can be misused and assigned to other users.
 
 #### Bucket policies and bucket ACLs
 
@@ -69,12 +70,12 @@ Each `statement` determines what the policy allows or denies and from whom (depe
 - Effect: It can be "Allow" or "Deny".
 - Principal: Only used in case a resource-based policy is created. It contains the user, or role for whom the policy applies.
 - Action: List of actions that are allowed or denied.
-- Resource: Only used in case a identity-bsed policy is created. It contains which resources the user or role will be able to apply the actions listed in the policy.
-- Condition (Optional): Specific cirmcumnstances under which the policy grants permisssion. For example you could set up a policy that additionaly checks for the IP address of an user to do an action.
+- Resource: Only used in case a identity-based policy is created. It contains which resources the user or role will be able to apply the actions listed in the policy.
+- Condition (Optional): Specific circumstances under which the policy grants permission. For example you could set up a policy that additionally checks for the IP address of an user to do an action.
 
 ### Creating an S3 bucket with Terraform
 
-Well... after a long, but necesary introduction to core concepts we can start the fun part. I needed to understand how to create a S3 bucket using Terraform. I created a new file called `main.tf` that contained the text below.
+Well... after a long, but necessary introduction to core concepts we can start the fun part. I needed to understand how to create a S3 bucket using Terraform. I created a new file called `main.tf` that contained the text below.
 
 Also bear in mind that all the code shown in this blog post can be found here: [https://github.com/nahueldsanchez/terraform-s3-bucket-mysfits](https://github.com/nahueldsanchez/terraform-s3-bucket-mysfits)
 
@@ -101,11 +102,11 @@ output "s3-domain-name" {
 }
 ```
 
-For the sake of clarity I ommited the provider declaration part. As you can see, I created an `aws_s3_bucket` resource called `aws-mysfits-terraform`. This resource has an optional argument called `bucket` which is used to set the bucket's name. In my case I defined a variable, `s3_bucket_name`, in a file called `variables.tf` that's used here.
+For the sake of clarity I omitted the provider declaration part. As you can see, I created an `aws_s3_bucket` resource called `aws-mysfits-terraform`. This resource has an optional argument called `bucket` which is used to set the bucket's name. In my case I defined a variable, `s3_bucket_name`, in a file called `variables.tf` that's used here.
 
 I used a specific property of the bucket that allows it to store a static website. You can find more information about that here: https://docs.aws.amazon.com/AmazonS3/latest/userguide/EnableWebsiteHosting.html. To do that in Terraform, I used the `website` object.
 
-The `website` object has an `index_document` argument that stablishes what file is returned when an HTTP(s) request arrives to the root of the S3 bucket. In my case I chose the `index.html` file that I will upload.
+The `website` object has an `index_document` argument that establishes what file is returned when an HTTP(s) request arrives to the root of the S3 bucket. In my case I chose the `index.html` file that I will upload.
 
 ### Uploading a file to the previously created S3 bucket.
 
@@ -159,11 +160,11 @@ resource "aws_iam_policy" "policy" {
 As you can see its use is very straightforward, but having to embed policies in the resource definition has some limitations:
 
 1. Keeping policies versioned will be difficult.
-2. Sintax errors included in the policy won't be noticed by Terraform.
+2. Syntax errors included in the policy won't be noticed by Terraform.
 
 ### Terraform Data Source: IAM Policy Document
 
-To help with this Terraform provides a Data Source called [`aws_iam_policy_document`](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document), that allows you to write a IAM policy using Hashicorp's Configuration Language enjoying sintax checking and making it easier to reutilize policies.
+To help with this Terraform provides a Data Source called [`aws_iam_policy_document`](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document), that allows you to write a IAM policy using Hashicorp's Configuration Language enjoying syntax checking and making it easier to reutilize policies.
 
 To use it, I created a file called `bucket_policy.tf` with the following content:
 

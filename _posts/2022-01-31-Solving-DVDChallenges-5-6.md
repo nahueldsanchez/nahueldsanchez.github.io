@@ -1,10 +1,11 @@
 ---
 layout: post
-title:  Solving Damn Vulnerable Defi Challenges Series (III). The rewarder and Selfie
+title:  Solving Damn Vulnerable DeFi Challenges Series (III). The rewarder and Selfie
 excerpt_separator: <!--more-->
+category: DeFi
 ---
 
-Hello!. Today's post continues with the Damn Vulnerable Defi Challenges saga. I'll share my solutions for challenges #5 - The rewarder and #6 - Selfie. I hope that you find it useful!.
+Hello!. Today's post continues with the Damn Vulnerable DeFi Challenges saga. I'll share my solutions for challenges #5 - The rewarder and #6 - Selfie. I hope that you find it useful!.
 
 <!--more-->
 
@@ -18,7 +19,7 @@ This pool used the [AccountingToken contract](https://github.com/tinchoabbate/da
 
 I reviewed how these snapshots were taken and, more important, when. I found that there was a private method `_recordSnapshot()` that triggered the snapshot mechanism. This method is also called via public function `snapshot()`, part of [AccountingToken](https://github.com/tinchoabbate/damn-vulnerable-defi/blob/v2.0.0/contracts/the-rewarder/AccountingToken.sol#L37). But this public function implements access controls, which means that to be able to take an snapshot using it, the attacker needs the `SNAPSHOT_ROLE` role.
 
-`_recordSnapshot()` was also called by the Contract's constructor (not useful for an attacker), and finally,  from `distributeRewards` Public method!. This last part presented an interesting posibility from an attacker's point of view.
+`_recordSnapshot()` was also called by the Contract's constructor (not useful for an attacker), and finally,  from `distributeRewards` Public method!. This last part presented an interesting possibility from an attacker's point of view.
 
 `distributeRewards` was the method used by the Rewarder Pool to pay the rewards to the users who deposited the liquidity tokens and waited the required amount of time. The method checked [if it was time for a new rewards round](https://github.com/tinchoabbate/damn-vulnerable-defi/blob/v2.0.0/contracts/the-rewarder/TheRewarderPool.sol#L68) and if it was, took and snapshot. After this step, *it performed all calculations based on the balances of that snapshot*. As this is a
 public method anyone can call it. Having this in mind and based on the problem statement:
@@ -67,7 +68,7 @@ what this means is that this contract implements a series of rules to allow the 
 
 So... How all of this can be interesting from an attacker's point of view?
 
-Well, lets ignore all the details for now and asumme that an attacker is able to queue
+Well, lets ignore all the details for now and assume that an attacker is able to queue
 an action and later execute it. This behavior could be leveraged to drain all the funds of the SelfiePool just queuing the `drainAllFunds` action with the attacker's address as the receiver.
 
 Let's review what the attacker needs to be able to do that.
@@ -92,7 +93,7 @@ I then proceeded to check how the Snapshots worked.
 ## Snapshots and who can take them
 
 Snapshots are implemented in DamnValuableTokenSnapshot. This contract inherits from
-Open Zeppeling's [ERC20Snapshot](https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/token/ERC20/extensions/ERC20Snapshot.sol)
+Open Zeppelin's [ERC20Snapshot](https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/token/ERC20/extensions/ERC20Snapshot.sol)
 I reviewed how Snapshots are taken and found the following interesting documentation
 in the code:
 

@@ -2,6 +2,7 @@
 layout: post
 title: Setting up a TP-Link TL-WR841N for remote debugging I
 excerpt_separator: <!--more-->
+category: [Vulnerability-Research, Hardware-Hacking]
 ---
 
 ## Introduction
