@@ -90,9 +90,20 @@ And based on this, if we recalculate the amount of ETH needed to borrow 1.000.00
 
 ``` wETH = (1.000.000 * 0.1) / 10100 = 9.90 ```
 
-As the attacker starts with 20 ETH, now it will be possible to borrow all the DVTs from the pool.
+This value is later multiplied by 3. Now if we ask the lending pool how much wETH is needed to borrow 1.000.000 DVTs we obtain:
+
+```
+>>> lp.calculateDepositOfWETHRequired(1000000)
+29
+```
+
+As the attacker starts with 20 ETH and swapped his 10.000 DVTs for 9.90 ETh, now it will be possible to borrow all the DVTs from the pool. Challenge passed!
 
 I've implemented this challenge and the proposed solution [here](https://github.com/nahueldsanchez/dvd_brownie/tree/master/puppet-v2).
+
+## Conclusion
+
+I think that this challenge teaches us a very valuable lesson. Even though developers did everything right and used trusted functions to perform calculations, still it was possible for an attacker to drain the pool. It's very important not only focus on securing and hardening the code but also carefully thinking about all potential scenarios involving liquidity and how external parties can interact with it.
 
 I hope you enjoyed the post, if you have any question do not hesitate reaching out.
 
