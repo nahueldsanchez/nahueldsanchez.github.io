@@ -97,7 +97,7 @@ This value is later multiplied by 3. Now if we ask the lending pool how much wET
 29
 ```
 
-As the attacker starts with 20 ETH and swapped his 10.000 DVTs for 9.90 ETh, now it will be possible to borrow all the DVTs from the pool. Challenge passed!
+As the attacker starts with 20 ETH and swapped his 10.000 DVTs for 9.90 ETH, now it will be possible to borrow all the DVTs from the pool. Challenge passed!
 
 I've implemented this challenge and the proposed solution [here](https://github.com/nahueldsanchez/dvd_brownie/tree/master/puppet-v2).
 
