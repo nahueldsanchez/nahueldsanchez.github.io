@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  Ethernaut challenges writeup Part V (Challenges 20 to 22).
+title:  Ethernaut challenges writeup Part V (Challenges 20 and 21).
 excerpt_separator: <!--more-->
 category: DeFi
 ---
