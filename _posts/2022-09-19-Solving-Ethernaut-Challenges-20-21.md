@@ -18,7 +18,7 @@ I solved this level exploiting the fact that the contract it is vulnerable to re
 1. Using reentrancy
 2. Creating an Out Of Gas exception
 
-I used option 1 and created a contract that in it's `receive` function it performed another call to `withdraw`, exploiting the re-entrancy issue. I set this malicious contract as partner and started the attack issuing a `withdraw()`.
+I used option 1 and created a contract that in its `receive` function it a call to `withdraw`, exploiting the re-entrancy issue. I set this malicious contract as partner and started the attack issuing a `withdraw()`.
 
 It's interesting to mention the Note provided while solving the level:
 
