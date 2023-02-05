@@ -1,8 +1,17 @@
+---
+layout: post
+title:  Ethernaut challenges writeup Part VII (Challenge 25).
+excerpt_separator: <!--more-->
+category: DeFi
+---
+
 # Motorbike Walkthrough
 
 ## Introduction
 
 This challenge recreates in an simpler mode a [vulnerability found in September 2021 in the UUPS Proxy contract library](https://forum.openzeppelin.com/t/uupsupgradeable-vulnerability-post-mortem/15680). The idea is that we have to find a way to execute the `selfdestruct()` operation in the `implementation` or `logic` contract.
+
+<!--more-->
 
 I won't explain here how this Proxy pattern work, you can check the "Further Reading" section for more information. The basic idea to exploit this level is to know that if the logic contract is not initialized, this means that its `initialize()` method was not executed, a malicious attacker can initialize it. This shouldn't be a major issue as the implementation contract's storage doesn't matter. However in the vast majority of cases additional logic is included when the logic contract is initialized, commonly granting some kind of special privileges to the address that initialized it, including control to perform upgrades. In this specific case `initialize` executes the following action: `upgrader = msg.sender;` which will allow the user to execute `upgradeToAndCall`.
 
