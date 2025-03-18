@@ -5,8 +5,6 @@ excerpt_separator: <!--more-->
 category: [Hardware-Hacking]
 ---
 
-# Un-bricking (and restoring the stock firmware!) a TP-Link AC1750 (Archer A7 v5)
-
 ## Introduction
 
 Hello!, As 2025 kicks off I'll try to write more often. This time I'll use this month's post as a guide for my future self in case I brick my router again, but it might be helpful for someone else too. Long story short, I flashed my old [TP-Link AC1750](https://www.tp-link.com/us/home-networking/wifi-router/archer-a7/) router with [OpenWRT](https://openwrt.org/toh/tp-link/archer_a7_v5) and at some point I decided to restore the stock firmware, thinking it was an easy task...
